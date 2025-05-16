@@ -1,0 +1,32 @@
+.people-table-container {
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 20px;
+}
+
+.people-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.people-table th, 
+.people-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.people-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.people-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.people-table tr:hover {
+  background-color: #f1f1f1;
+} 
