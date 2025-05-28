@@ -1,10 +1,8 @@
-import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function BootstrapPage() {
   return (
-    <div>
-      {/* Header with logo and orange background */}
+    <div className="d-flex flex-column min-vh-100">
       <div style={{ backgroundColor: '#e87722' }} className="text-center py-4">
         <img
           src={require("../assets/fptu_logo.png")}
@@ -18,7 +16,6 @@ export default function BootstrapPage() {
         </nav>
       </div>
 
-      {/* Main content */}
       <div className="bg-white text-center py-5">
         <section id="about" className="mb-5">
           <h2 className="fw-bold">About</h2>
@@ -30,7 +27,6 @@ export default function BootstrapPage() {
         </section>
       </div>
 
-      {/* Footer */}
       <footer style={{ backgroundColor: '#FFD65DFF' }} className="text-center py-3 mt-auto text-white">
         <small>&copy; 2023 Website. All rights reserved.</small>
       </footer>

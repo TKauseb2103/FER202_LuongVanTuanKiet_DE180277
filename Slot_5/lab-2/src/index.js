@@ -9,9 +9,9 @@ import FptHomepage from './exercise_5/fpt_homepage';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <Grid /> */}
+    <Grid />
     {/* <BootstrapPage /> */}
-    <FptHomepage />
+    {/* <FptHomepage /> */}
   </React.StrictMode>
 );
 
