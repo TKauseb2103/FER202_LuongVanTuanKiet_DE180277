@@ -23,10 +23,8 @@ const QuizApp = () => {
         selected, setSelected
     } = useQuiz();
 
-    // State cho quizData động
     const [quizData, setQuizData] = useState(initialQuizData);
 
-    // State cho form tạo câu hỏi mới
     const [showCreate, setShowCreate] = useState(false);
     const [newQuestion, setNewQuestion] = useState('');
     const [newAnswers, setNewAnswers] = useState(['', '', '']);
@@ -59,11 +57,9 @@ const QuizApp = () => {
         setSelected(null);
     };
 
-    // Thêm câu hỏi mới
     const handleAddQuestion = (e) => {
         e.preventDefault();
         if (
-            newQuestion.trim() &&
             newAnswers.every(ans => ans.trim()) &&
             newAnswers.includes(newCorrect)
         ) {
