@@ -1,8 +1,8 @@
-import React, { useContext, useEffect } from 'react';
-import { QuizContext } from '../hook/QuizProvider';
-import { Container, Card, Button, Form } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { useQuiz } from '../hook/QuizProvider';
+import { Container, Card, Button, Form, Row, Col } from 'react-bootstrap';
 
-export const quizData = [
+const initialQuizData = [
     {
         question: 'What is ReactJS?',
         answers: ['A JavaScript library for building user interfaces', 'A programming language', 'A database management system'],
@@ -21,7 +21,16 @@ const QuizApp = () => {
         score, setScore,
         quizEnd, setQuizEnd,
         selected, setSelected
-    } = useContext(QuizContext);
+    } = useQuiz();
+
+    // State cho quizData động
+    const [quizData, setQuizData] = useState(initialQuizData);
+
+    // State cho form tạo câu hỏi mới
+    const [showCreate, setShowCreate] = useState(false);
+    const [newQuestion, setNewQuestion] = useState('');
+    const [newAnswers, setNewAnswers] = useState(['', '', '']);
+    const [newCorrect, setNewCorrect] = useState('');
 
     useEffect(() => {
         if (quizEnd) {
@@ -50,8 +59,94 @@ const QuizApp = () => {
         setSelected(null);
     };
 
+    // Thêm câu hỏi mới
+    const handleAddQuestion = (e) => {
+        e.preventDefault();
+        if (
+            newQuestion.trim() &&
+            newAnswers.every(ans => ans.trim()) &&
+            newAnswers.includes(newCorrect)
+        ) {
+            setQuizData(prev => [
+                ...prev,
+                {
+                    question: newQuestion,
+                    answers: newAnswers,
+                    correctAnswer: newCorrect
+                }
+            ]);
+            setNewQuestion('');
+            setNewAnswers(['', '', '']);
+            setNewCorrect('');
+            setShowCreate(false);
+            resetQuiz();
+        }
+    };
+
+    const handleAnswerChange = (idx, value) => {
+        setNewAnswers(prev => prev.map((ans, i) => (i === idx ? value : ans)));
+    };
+
     return (
         <Container className="py-5">
+            <div className="d-flex justify-content-end mb-3">
+                <Button
+                    variant={showCreate ? "secondary" : "success"}
+                    onClick={() => setShowCreate(v => !v)}
+                >
+                    {showCreate ? "Close" : "Create Question"}
+                </Button>
+            </div>
+            {showCreate && (
+                <Card className="mb-4 mx-auto" style={{ maxWidth: 600 }}>
+                    <Card.Header>
+                        <h4>Create New Question</h4>
+                    </Card.Header>
+                    <Card.Body>
+                        <Form onSubmit={handleAddQuestion}>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Question</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={newQuestion}
+                                    onChange={e => setNewQuestion(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                            <Row>
+                                {newAnswers.map((ans, idx) => (
+                                    <Col md={4} key={idx}>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>Answer {idx + 1}</Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                value={ans}
+                                                onChange={e => handleAnswerChange(idx, e.target.value)}
+                                                required
+                                            />
+                                            <Form.Check
+                                                type="radio"
+                                                name="correct"
+                                                label="Correct"
+                                                checked={newCorrect === ans && ans !== ''}
+                                                onChange={() => setNewCorrect(ans)}
+                                                disabled={!ans}
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                ))}
+                            </Row>
+                            <Button type="submit" variant="primary" disabled={
+                                !newQuestion.trim() ||
+                                newAnswers.some(ans => !ans.trim()) ||
+                                !newAnswers.includes(newCorrect)
+                            }>
+                                Add Question
+                            </Button>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            )}
             {!quizEnd ? (
                 <Card className="text-start mx-auto" style={{ maxWidth: 600 }}>
                     <Card.Header>
